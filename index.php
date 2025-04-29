@@ -1,4 +1,10 @@
 <?php
+/**
+ * Dev environment interface.
+ *
+ * @since 0.0.1
+ * @author WoodrowShigeru <woodrow.shigeru@gmx.net>
+ */
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -13,7 +19,8 @@ require_once implode(DIRECTORY_SEPARATOR, [
 ]);
 
 
-$input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'tiles.svg']);
+// $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'tiles.svg']);
+$input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'dice-6.svg']);
 $output_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
 
 ivd([
@@ -21,10 +28,18 @@ ivd([
 	'readable'		=> is_readable($input_file),
 ]);
 
+if (FALSE) {
+	throw new Exception('InputFileNotReadable');
+}
+
 
 // -----
 
-function remove_hidden_stuff_from_nodelist( $node ) {
+/**
+ * @param DOMElement $node
+ * @return void
+ */
+function remove_hidden_children( $node ) {
 
 	$homunculus = new DOMNode();
 
@@ -33,16 +48,13 @@ function remove_hidden_stuff_from_nodelist( $node ) {
 		return $homunculus;
 	}
 
-	$deletables = [];
 
-	foreach ($node->childNodes as $child) {
-		$is_hidden = $child->hasAttribute('display') && $child->getAttribute('display') === 'none';
-		// ivd(compact('is_hidden'));
-
-		if ($is_hidden) {
-			$deletables[] = $child;
-		}
-	}
+	$deletables = array_filter(
+		iterator_to_array($node->childNodes),
+		fn($node) => $node instanceof DOMElement
+		&&	$node->hasAttribute('display')
+		&&	$node->getAttribute('display') === 'none'
+	);
 
 	foreach ($deletables as $child) {
 		$child->parentNode->removeChild($child);
@@ -53,11 +65,13 @@ function remove_hidden_stuff_from_nodelist( $node ) {
 }
 
 
+/**
+ * @param DOMElement $node
+ * @return void
+ */
 function funky_recursion( $node ) {
 
 	// TODO  node or element?
-
-	ivd(get_class($node), "isntanceof");
 
 	if (!($node instanceof DOMElement)) {
 		return;
@@ -68,7 +82,7 @@ function funky_recursion( $node ) {
 		return;
 	}
 
-	remove_hidden_stuff_from_nodelist($node);
+	remove_hidden_children($node);
 
 	foreach ($node->childNodes as $child) {
 		funky_recursion($child);
@@ -81,6 +95,7 @@ function funky_recursion( $node ) {
 $dom = new DOMDocument();
 
 $dom->load($input_file);
+// TODO  trycatch.
 
 $root = $dom->getElementsByTagName('svg');
 
@@ -92,15 +107,14 @@ if ($root->length !== 1) {
 
 ivd($root[0]->childNodes->length, "before");
 
-// ivd($root[0]->childNodes[1]->childNodes[1]->childNodes[0]->hasAttribute('display'), "wandering if");
-
 funky_recursion($root[0]);
-// $samba = remove_hidden_stuff_from_nodelist($root[0]);
+// $samba = remove_hidden_children($root[0]);
 
 $samba = $root[0];
 ivd($samba->childNodes->length, "after");
 
 ivd($dom->saveHTML());
 
+file_put_contents($output_file, $dom->saveXML());
 // include $input_file;
 
