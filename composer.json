@@ -1,0 +1,20 @@
+{
+	"name": "woodrowshigeru/optimize-svg",
+	"version": "0.0.1-dev",
+	"short-name": "OptimizeSvg",
+	"description": "For example, remove hidden layers.",
+	"started": "April 2025",
+	"license": "proprietary",
+	"type": "project",
+	"authors": [
+		{
+			"name": "Woodrow Shigeru",
+			"email": "woodrow.shigeru@gmx.net"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"OptimizeSvg\\": "src/classes/"
+		}
+	}
+}

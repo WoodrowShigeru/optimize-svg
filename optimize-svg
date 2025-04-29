@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "repo",
+			"file_exclude_patterns": ["*.phar"],
+			"folder_exclude_patterns": [
+				".vagrant",
+				"dist",
+				"node_modules",
+				"shared",
+				"vendor"
+			]
+		},
+	]
+}
