@@ -14,7 +14,7 @@ require_once implode(DIRECTORY_SEPARATOR, [
 
 
 $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'tiles.svg']);
-$output_file = implode(DIRECTORY_SEPARATOR, ['.', 'output.svg']);
+$output_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
 
 ivd([
 	'file-exists'	=> file_exists($input_file),
@@ -28,7 +28,7 @@ function remove_hidden_stuff_from_nodelist( $node ) {
 
 	$homunculus = new DOMNode();
 
-	if (!($node instanceof DOMNode)) {
+	if (!($node instanceof DOMElement)) {
 		return;
 		return $homunculus;
 	}
@@ -52,6 +52,30 @@ function remove_hidden_stuff_from_nodelist( $node ) {
 	return $homunculus;
 }
 
+
+function funky_recursion( $node ) {
+
+	// TODO  node or element?
+
+	ivd(get_class($node), "isntanceof");
+
+	if (!($node instanceof DOMElement)) {
+		return;
+		return new DOMElement();
+	}
+
+	if (!$node->childNodes->length) {
+		return;
+	}
+
+	remove_hidden_stuff_from_nodelist($node);
+
+	foreach ($node->childNodes as $child) {
+		funky_recursion($child);
+	};
+}
+
+
 // -----
 
 $dom = new DOMDocument();
@@ -64,9 +88,14 @@ if ($root->length !== 1) {
 	throw new Exception('NoCleanSvg');
 }
 
+
+
 ivd($root[0]->childNodes->length, "before");
 
-$samba = remove_hidden_stuff_from_nodelist($root[0]);
+// ivd($root[0]->childNodes[1]->childNodes[1]->childNodes[0]->hasAttribute('display'), "wandering if");
+
+funky_recursion($root[0]);
+// $samba = remove_hidden_stuff_from_nodelist($root[0]);
 
 $samba = $root[0];
 ivd($samba->childNodes->length, "after");
