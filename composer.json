@@ -4,7 +4,7 @@
 	"short-name": "OptimizeSvg",
 	"description": "For example, remove hidden layers.",
 	"started": "April 2025",
-	"license": "proprietary",
+	"license": "proprietary TODO",
 	"type": "project",
 	"authors": [
 		{
@@ -14,7 +14,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"OptimizeSvg\\": "src/classes/"
+			"OptimizeSvg\\": "src/"
 		}
 	}
 }

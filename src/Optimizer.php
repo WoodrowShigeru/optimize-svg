@@ -14,7 +14,7 @@
 
 
 /**
- *
+ * @since 0.0.1
  */
 class Optimizer {
 
@@ -135,6 +135,7 @@ class Optimizer {
 		$this->recurse($this->root);
 
 		// TODO  remove superfluous whitespace? Or already done automatically?
+		// TODO  maybe optionally add header now. (for licensing?)
 	}
 
 
