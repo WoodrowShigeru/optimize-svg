@@ -18,12 +18,12 @@
  */
 class Optimizer {
 
-	private bool $is_dev;
-	private string $input_file;
-	private string $output_file;
+	private $is_dev;
+	private $input_file;
+	private $output_file;
 
-	private DOMDocument $dom;
-	private DOMElement $root;
+	private $dom;
+	private $root;
 
 
 	/**
@@ -76,7 +76,7 @@ class Optimizer {
 	 * @param DOMElement $node
 	 * @return void
 	 */
-	private function removeHiddenChildren( mixed $node ) {
+	private function removeHiddenChildren( $node ) {
 
 		if (!($node instanceof DOMElement)) {
 			return;
@@ -85,9 +85,13 @@ class Optimizer {
 
 		$deletables = array_filter(
 			iterator_to_array($node->childNodes),
-			fn($node) => $node instanceof DOMElement
-			&&	$node->hasAttribute('display')
-			&&	$node->getAttribute('display') === 'none'
+			function($node) {
+				return
+					$node instanceof DOMElement
+				&&	$node->hasAttribute('display')
+				&&	$node->getAttribute('display') === 'none'
+				;
+			}
 		);
 
 		foreach ($deletables as $child) {
@@ -100,7 +104,7 @@ class Optimizer {
 	 * @param DOMElement $node
 	 * @return void
 	 */
-	private function recurse( mixed $node ) {
+	private function recurse( $node ) {
 
 		// TODO  node or element?
 
@@ -134,8 +138,9 @@ class Optimizer {
 
 		$this->recurse($this->root);
 
-		// TODO  remove superfluous whitespace? Or already done automatically?
+		// TODO  remove superfluous whitespace (also in <style> block).
 		// TODO  maybe optionally add header now. (for licensing?)
+		// TODO  multi files / input dir.
 	}
 
 

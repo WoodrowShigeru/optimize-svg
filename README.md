@@ -54,7 +54,7 @@ echo $optimizer->dump();
 
 ## Dependencies
 
-* PHP8
+* PHP7
 
 
 　​

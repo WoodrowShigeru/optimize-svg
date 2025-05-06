@@ -1,8 +1,16 @@
 
 # Change Log
 
-## 0.0.1
+## 0.0.2
 *(ø)*
+
+* Made Optimizer more PHP7 compatible. (TODO  testing)
+
+
+　​
+
+## 0.0.1
+*(2025-05-06)*
 
 * Set up project.
 * Set up dev environment.

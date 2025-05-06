@@ -1,6 +1,6 @@
 {
 	"name": "woodrowshigeru/optimize-svg",
-	"version": "0.0.1-dev",
+	"version": "0.0.2-dev",
 	"short-name": "OptimizeSvg",
 	"description": "For example, remove hidden layers.",
 	"started": "April 2025",
