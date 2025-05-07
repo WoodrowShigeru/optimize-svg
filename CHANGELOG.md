@@ -1,10 +1,11 @@
 
 # Change Log
 
-## 0.0.2
+## 0.0.2-dev
 *(ø)*
 
 * Made Optimizer more PHP7 compatible. (TODO  testing)
+* Detect hidden state also in inline styles.
 
 
 　​

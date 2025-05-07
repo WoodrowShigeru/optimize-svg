@@ -52,6 +52,18 @@ echo $optimizer->dump();
 
 　​
 
+## What it can't do
+
+* Detect if an element is hidden only via a computed property; for example:
+
+```html
+<style>.hidden{display:none}</style>
+<g class="hidden">…</g>
+```
+
+
+　​
+
 ## Dependencies
 
 * PHP7

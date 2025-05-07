@@ -86,11 +86,21 @@ class Optimizer {
 		$deletables = array_filter(
 			iterator_to_array($node->childNodes),
 			function($node) {
-				return
-					$node instanceof DOMElement
-				&&	$node->hasAttribute('display')
+				// skip check on irrelephant content, i.e. text nodes.
+				if (!($node instanceof DOMElement)) {
+					return false;
+				}
+
+				// hidden via attribute.
+				if (
+					$node->hasAttribute('display')
 				&&	$node->getAttribute('display') === 'none'
-				;
+				) {
+					return true;
+				}
+
+				// last chance: inline style.
+				return preg_match('/(^|;)display:\s*none(;|$)/', $node->getAttribute('style')) === 1;
 			}
 		);
 
