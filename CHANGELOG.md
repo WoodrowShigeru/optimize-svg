@@ -6,6 +6,7 @@
 
 * Made Optimizer more PHP7 compatible. (TODO  testing)
 * Detect hidden state also in inline styles.
+* Added error handling: file permission shenanigans.
 
 
 　​

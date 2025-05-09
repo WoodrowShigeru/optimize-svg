@@ -14,17 +14,37 @@
 
 
 /**
+ * Optimize a single SVG file.
+ *
  * @since 0.0.1
  */
 class Optimizer {
 
+	// obsolete.
 	private $is_dev;
+
+	/**
+	 * @var string $input_file
+	 *   Absolute full path of the input filename, from which we build our DOM.
+	 */
 	private $input_file;
+
 	private $output_file;
 
+	/**
+	 * @var DOMDocument $dom
+	 *   Tree representation of the SVG XML DOM.
+	 */
 	private $dom;
+
+	/**
+	 * @var DOMElement $root
+	 *   The root node of the DOM tree.
+	 */
 	private $root;
 
+
+	// ---------------------- ALPHA + OMEGA ------------------------------------
 
 	/**
 	 * Create an instance of this file.
@@ -35,22 +55,27 @@ class Optimizer {
 	 *
 	 * @throws Exception
 	 */
-	public function __construct( string $input, string $output, bool $is_dev ) {
+	public function __construct( string $input, string $output, bool $is_dev = FALSE ) {
 
 		$this->is_dev = $is_dev;
 
-		// TODO  are both necessary?
-		if (!file_exists($input) || !is_readable($input)) {
+		if (!is_readable($input)) {
 			throw new Exception('InputFileNotReadable');
 		}
 
-		// TODO  finish … wrong location?
-	//	if (!file_exists($output) || !is_readable($output)) {
-	//		throw new Exception('OutputFileNotWritable');
-	//	}
+		if (is_dir($input)) {
+			throw new Exception('InputFileNoFile');
+		}
 
 
-		$this->input_file = $input;  // discard?
+		$ext = strtoupper(pathinfo($input, PATHINFO_EXTENSION));
+
+		if ($ext !== 'SVG') {
+			throw new Exception('InputFileNoSvg');
+		}
+
+
+		$this->input_file = $input;
 		$this->output_file = $output;
 
 
@@ -62,18 +87,22 @@ class Optimizer {
 		$svg = $this->dom->getElementsByTagName('svg');
 
 		if ($svg->length !== 1) {
-			throw new Exception('NoCleanSvg');
+			throw new Exception('InputFileNoCleanSvg');
 		}
 
 		$this->root = $svg[0];
+		ivd(get_class($this->root));
 	}
 
 
 
-	// -----
+	// ---------------------- CORE ---------------------------------------------
 
 	/**
-	 * @param DOMElement $node
+	 * Remove children from a given node if they are hidden.
+	 *
+	 * @param DOMElement|DOMText|DOMDocument $node
+	 *
 	 * @return void
 	 */
 	private function removeHiddenChildren( $node ) {
@@ -104,6 +133,8 @@ class Optimizer {
 			}
 		);
 
+		// must first gather, then remove separately, in order to avoid
+		// reference errors.
 		foreach ($deletables as $child) {
 			$child->parentNode->removeChild($child);
 		}
@@ -173,6 +204,10 @@ class Optimizer {
 	 */
 	public function save() {
 
+		if (!is_writable($this->output_file)) {
+			throw new Exception('OutputFileNotWritable');
+		}
+
 		$content = $this->dom->saveXML();
 
 		if (FALSE) {
@@ -185,12 +220,62 @@ class Optimizer {
 	}
 
 
+	/**
+	 * @throws Exception
+	 *
+	 * @param string $input
+	 * @param string $output
+	 *
+	 * @return void
+	 */
+	public static function processDir( string $input, string $output ) {
+
+		return;
+		// PSEUDOCODE:
+
+
+		$list = scan_somehow($input);
+		if (!is_dir($input)) {
+			throw new Exception('InputDirNoDir');
+		}
+		if (!is_readable($input)) {
+			throw new Exception('InputDirNotReadable');
+		}
+
+		if (!is_dir($output)) {
+			throw new Exception('OutputDirNoDir');
+		}
+
+		// that method doesn't exist, I think.
+	//	if (!is_writable($output)) {
+	//		throw new Exception('OutputDirNotWritable');
+	//	}
+
+		// that's not how you check that.
+	//	if (!empty($output)) {
+	//		throw new Exception('OutputDirNotEmpty');
+	//	}
+
+		// maybe mkdir.
+
+		foreach ($input as $input_file) {
+			$output_file = magic($input_file, $output);
+
+			$optimizer = new Optimizer($input_file, $output_file, TRUE);
+			$optimizer->optimize();
+			ivd($optimizer->dump());
+			$optimizer->save();
+		}
+	}
+
+
 
 
 
 
 
 	// GETTERS
+	// ---------------------- GETTER + SETTER ----------------------------------
 
 
 	/**
