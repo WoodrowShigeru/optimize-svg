@@ -91,10 +91,10 @@ You can use a directory with many \*.SVG files as input (TODO  work in progress)
 ```php
 <?php
 // ✖ will throw an Exception.
-$optimizer = new Optimizer('unoptimized-file.svg', 'output-file.svg');
+$optimizer = new Optimizer('./unoptimized-dir', './output-dir');
 
 // ✔ maybe like this?
-Optimizer::processDir('unoptimized-dir', 'output-dir');
+Optimizer::processDir('./unoptimized-dir', './output-dir');
 ```
 
 
@@ -107,6 +107,16 @@ Optimizer::processDir('unoptimized-dir', 'output-dir');
 
 `CONFIG_KEEP_WHITESPACE`
 : Do note remove whitespace between nodes.
+
+```php
+<?php
+// configure any way you like:
+$optimizer = new Optimizer(
+	$input_file,
+	$output_file,
+	Optimizer::CONFIG_KEEP_HIDDEN_NODES | Optimizer::CONFIG_KEEP_WHITESPACE
+);
+```
 
 
 　​

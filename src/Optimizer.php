@@ -213,7 +213,6 @@ class Optimizer {
 
 		// TODO  remove superfluous whitespace (also in <style> block).
 		// TODO  maybe optionally add header now. (for licensing?)
-		// TODO  multi files / input dir.
 	}
 
 
@@ -280,9 +279,13 @@ class Optimizer {
 
 
 	/**
+	 * multi files / input dir.
+	 *
 	 * @param string $input
 	 * @param string $output
+	 *
 	 * @param int $options
+	 *   One optionset to rule them all.
 	 *
 	 * @throws Exception
 	 *
@@ -290,46 +293,51 @@ class Optimizer {
 	 */
 	public static function processDir( string $input, string $output, int $options = 0 ) {
 
+		// TODO  clean up.
+		// TODO  testing, each exception. (and/or unittest)
+
 	//	return;
 		// PSEUDOCODE:
 
 
-//		if (!file_exists($input)) {
-//			throw new Exception('InputDirNotFound');
-//		}
-//
-//		if (!is_readable($input)) {
-//			throw new Exception('InputDirNotReadable');
-//		}
-//
-//		if (!is_dir($input)) {
-//			throw new Exception('InputDirNoDir');
-//		}
-//
-//
-//		if (!is_dir($output)) {
-//			throw new Exception('OutputDirNoDir');
-//		}
-//
-//
-//		// that method doesn't exist, I think.
-//	//	if (!is_writable($output)) {
-//	//		throw new Exception('OutputDirNotWritable');
-//	//	}
-//
-//		// that's not how you check that.
-//	//	if (!empty($output)) {
-//	//		throw new Exception('OutputDirNotEmpty');
-//	//	}
+		if (!file_exists($input)) {
+			throw new Exception('InputDirNotFound');
+		}
+
+		if (!is_readable($input)) {
+			throw new Exception('InputDirNotReadable');
+		}
+
+		if (!is_dir($input)) {
+			throw new Exception('InputDirNoDir');
+		}
+
 
 		// maybe mkdir.
+
+		if (file_exists($output)) {
+			if (!is_dir($output)) {
+				throw new Exception('OutputDirNoDir');
+			}
+
+
+			// that method doesn't exist, I think.
+			if (!is_writable($output)) {
+				throw new Exception('OutputDirNotWritable');
+			}
+	//
+	//		// that's not how you check that.
+	//	//	if (!empty($output)) {
+	//	//		throw new Exception('OutputDirNotEmpty');
+	//	//	}
+
+		}
+		// TODO  directory traversal?
 
 
 		$output = provideTrailingSlash($output);
 
 
-
-		// TODO  directory traversal?
 		$list = listDir($input, [
 		//	'plz_files_only' => TRUE,
 			'extensions'	=> ['svg'],
