@@ -27,9 +27,9 @@ function provideTrailingSlash( string $dir ) {
 
 	if (
 		empty($dir)
-	||	(strpos(strrev($dir), '/') !== 0)
+	||	(strpos(strrev($dir), DIRECTORY_SEPARATOR) !== 0)
 	) {
-		$dir .= '/';
+		$dir .= DIRECTORY_SEPARATOR;
 	}
 
 	return $dir;

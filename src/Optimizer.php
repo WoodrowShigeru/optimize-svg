@@ -250,7 +250,10 @@ class Optimizer {
 	 */
 	public function save() {
 
-		if (!is_writable($this->output_file)) {
+		if (
+			file_exists($this->output_file)
+		&&	!is_writable($this->output_file)
+		) {
 			throw new Exception('OutputFileNotWritable');
 		}
 
@@ -322,6 +325,9 @@ class Optimizer {
 		// maybe mkdir.
 
 
+		$output = provideTrailingSlash($output);
+
+
 
 		// TODO  directory traversal?
 		$list = listDir($input, [
@@ -330,10 +336,13 @@ class Optimizer {
 		]);
 		ivd($list, 'scanned');
 
-		throw new Exception('StopHere');
+	//	throw new Exception('StopHere');
 
-		foreach ($input as $input_file) {
-			$output_file = magic($input_file, $output);
+		foreach ($list as $input_file) {
+			$output_file = $output .basename($input_file);
+		//	ivd($output);
+		//	ivd(basename($input_file));
+		//	$output_file = magic($input_file, $output);
 
 			$optimizer = new Optimizer($input_file, $output_file, $options);
 			$optimizer->optimize();
