@@ -1,6 +1,6 @@
 <?php
 /**
- * dingdong class file.
+ * Optimizer class file.
  *
  * @since 0.0.1
  * @author WoodrowShigeru <woodrow.shigeru@gmx.net>
@@ -29,6 +29,10 @@ class Optimizer {
 	 */
 	private $input_file;
 
+	/**
+	 * @var string $output_file
+	 *   Absolute full path of the output filename, from which we build our DOM.
+	 */
 	private $output_file;
 
 	/**
@@ -42,6 +46,7 @@ class Optimizer {
 	 *   The root node of the DOM tree.
 	 */
 	private $root;
+
 
 
 	// ---------------------- ALPHA + OMEGA ------------------------------------
@@ -80,9 +85,7 @@ class Optimizer {
 
 
 		$this->dom = new DOMDocument();
-
 		$this->dom->load($input);
-		// TODO  trycatch.
 
 		$svg = $this->dom->getElementsByTagName('svg');
 
@@ -91,7 +94,6 @@ class Optimizer {
 		}
 
 		$this->root = $svg[0];
-		ivd(get_class($this->root));
 	}
 
 
@@ -142,12 +144,13 @@ class Optimizer {
 
 
 	/**
-	 * @param DOMElement $node
+	 * Recursively traverse and optimize a node and its children.
+	 *
+	 * @param DOMElement|DOMText|DOMDocument $node
+	 *
 	 * @return void
 	 */
 	private function recurse( $node ) {
-
-		// TODO  node or element?
 
 		if (!($node instanceof DOMElement)) {
 			return;
@@ -163,11 +166,6 @@ class Optimizer {
 			$this->recurse($child);
 		};
 	}
-
-
-	// -----
-
-
 
 
 	/**
@@ -198,6 +196,8 @@ class Optimizer {
 
 
 	/**
+	 * Save the document in the previously specified output filename.
+	 *
 	 * @throws Exception
 	 *
 	 * @return void
@@ -208,11 +208,22 @@ class Optimizer {
 			throw new Exception('OutputFileNotWritable');
 		}
 
-		$content = $this->dom->saveXML();
+		// TODO  directory traversal?
 
-		if (FALSE) {
-			// is FALSE?
-			throw new Exception('XmlKaputt');
+
+		$content = FALSE;
+		$options = 0;
+		// TODO  testing: LIBXML_NOBLANKS, LIBXML_NSCLEAN.
+
+		try {
+			$content = $this->dom->saveXML(NULL, $options);
+
+		} catch (Exception $ex) {
+			$content = FALSE;
+		}
+
+		if ($content === FALSE) {
+			throw new Exception('OutputXmlKaputt');
 		}
 
 		file_put_contents($this->output_file, $content);
@@ -270,13 +281,7 @@ class Optimizer {
 
 
 
-
-
-
-
-	// GETTERS
 	// ---------------------- GETTER + SETTER ----------------------------------
-
 
 	/**
 	 * @return string
@@ -284,6 +289,7 @@ class Optimizer {
 	public function getInputFile() {
 		return $this->input_file;
 	}
+
 
 	/**
 	 * @return string

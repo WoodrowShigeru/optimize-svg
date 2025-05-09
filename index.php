@@ -27,8 +27,9 @@ require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'Optimizer.php']);
 // $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 // $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'excited-friend.✔']);
 // $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'nosvg.md']);
-$input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'sneaky.svg']);
+// $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'sneaky.svg']);
 // $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'half.svg']);
+$input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'double.svg']);
 $output_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
 // $output_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 
