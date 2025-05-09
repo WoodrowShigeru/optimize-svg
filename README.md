@@ -127,6 +127,10 @@ Optimizer::processDir('unoptimized-dir', 'output-dir');
 
 * PHP7
 
+TODO  what modules?
+	* mb_* for mb_strtolower in listDir.
+	* libxml?
+
 
 　​
 

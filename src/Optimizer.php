@@ -13,6 +13,9 @@
 // use Exception;
 
 
+require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'banans.php';
+
+
 /**
  * Optimize a single SVG file.
  *
@@ -22,6 +25,8 @@ class Optimizer {
 
 	const CONFIG_KEEP_HIDDEN_NODES	= 0b001;
 	const CONFIG_KEEP_WHITESPACE	= 0b010;
+
+	const SKIPPABLES = ['.', '..'];
 
 
 	/**
@@ -272,50 +277,65 @@ class Optimizer {
 
 
 	/**
-	 * @throws Exception
-	 *
 	 * @param string $input
 	 * @param string $output
+	 * @param int $options
+	 *
+	 * @throws Exception
 	 *
 	 * @return void
 	 */
-	public static function processDir( string $input, string $output ) {
+	public static function processDir( string $input, string $output, int $options = 0 ) {
 
-		return;
+	//	return;
 		// PSEUDOCODE:
 
 
-		$list = scan_somehow($input);
-		if (!is_dir($input)) {
-			throw new Exception('InputDirNoDir');
-		}
-		if (!is_readable($input)) {
-			throw new Exception('InputDirNotReadable');
-		}
-
-		if (!is_dir($output)) {
-			throw new Exception('OutputDirNoDir');
-		}
-
-		// TODO  directory traversal?
-
-
-		// that method doesn't exist, I think.
-	//	if (!is_writable($output)) {
-	//		throw new Exception('OutputDirNotWritable');
-	//	}
-
-		// that's not how you check that.
-	//	if (!empty($output)) {
-	//		throw new Exception('OutputDirNotEmpty');
-	//	}
+//		if (!file_exists($input)) {
+//			throw new Exception('InputDirNotFound');
+//		}
+//
+//		if (!is_readable($input)) {
+//			throw new Exception('InputDirNotReadable');
+//		}
+//
+//		if (!is_dir($input)) {
+//			throw new Exception('InputDirNoDir');
+//		}
+//
+//
+//		if (!is_dir($output)) {
+//			throw new Exception('OutputDirNoDir');
+//		}
+//
+//
+//		// that method doesn't exist, I think.
+//	//	if (!is_writable($output)) {
+//	//		throw new Exception('OutputDirNotWritable');
+//	//	}
+//
+//		// that's not how you check that.
+//	//	if (!empty($output)) {
+//	//		throw new Exception('OutputDirNotEmpty');
+//	//	}
 
 		// maybe mkdir.
+
+
+
+		// TODO  directory traversal?
+		$list = listDir($input, [
+		//	'plz_files_only' => TRUE,
+			'extensions'	=> ['svg'],
+		]);
+		ivd($list, 'scanned');
+
+		throw new Exception('StopHere');
 
 		foreach ($input as $input_file) {
 			$output_file = magic($input_file, $output);
 
-			$optimizer = new Optimizer($input_file, $output_file, TRUE);
+			$optimizer = new Optimizer($input_file, $output_file, $options);
 			$optimizer->optimize();
 			ivd($optimizer->dump());
 			$optimizer->save();
