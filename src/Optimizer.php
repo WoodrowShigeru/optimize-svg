@@ -59,10 +59,19 @@ class Optimizer {
 	 * @param bool $is_dev
 	 *
 	 * @throws Exception
+	 *   InputFileNotFound
+	 *   InputFileNotReadable
+	 *   InputFileNoFile
+	 *   InputFileNoSvg
+	 *   InputFileNoCleanSvg
 	 */
 	public function __construct( string $input, string $output, bool $is_dev = FALSE ) {
 
 		$this->is_dev = $is_dev;
+
+		if (!file_exists($input)) {
+			throw new Exception('InputFileNotFound');
+		}
 
 		if (!is_readable($input)) {
 			throw new Exception('InputFileNotReadable');
@@ -78,6 +87,8 @@ class Optimizer {
 		if ($ext !== 'SVG') {
 			throw new Exception('InputFileNoSvg');
 		}
+
+		// decision: allow $output === $input.
 
 
 		$this->input_file = $input;
@@ -138,7 +149,12 @@ class Optimizer {
 		// must first gather, then remove separately, in order to avoid
 		// reference errors.
 		foreach ($deletables as $child) {
-			$child->parentNode->removeChild($child);
+			try {
+				$child->parentNode->removeChild($child);
+
+			} catch (Exception $ex) {
+				// technically, not possible. But for the IDEs …
+			}
 		}
 	}
 
@@ -169,7 +185,7 @@ class Optimizer {
 
 
 	/**
-	 * @throws Exception
+	 * Optimize the full document.
 	 *
 	 * @return void
 	 */
@@ -186,12 +202,21 @@ class Optimizer {
 	/**
 	 * It's a dev thing. You wouldn't understand …
 	 *
+	 * @throws Exception
+	 *   RenderFailed
+	 *
 	 * @return string
 	 *   Returns HTML content of whole document.
 	 */
 	public function dump() {
 
-		return $this->dom->saveHTML();
+		$html = $this->dom->saveHTML();
+
+		if ($html === FALSE) {
+			throw new Exception('RenderFailed');
+		}
+
+		return $html;
 	}
 
 
@@ -199,6 +224,9 @@ class Optimizer {
 	 * Save the document in the previously specified output filename.
 	 *
 	 * @throws Exception
+	 *   OutputFileNotWritable
+	 *   OutputXmlKaputt
+	 *   SaveFailed
 	 *
 	 * @return void
 	 */
@@ -208,11 +236,10 @@ class Optimizer {
 			throw new Exception('OutputFileNotWritable');
 		}
 
-		// TODO  directory traversal?
-
 
 		$content = FALSE;
 		$options = 0;
+		// $options = LIBXML_NOBLANKS;  // TODO  do I have to do this on-load?
 		// TODO  testing: LIBXML_NOBLANKS, LIBXML_NSCLEAN.
 
 		try {
@@ -226,8 +253,9 @@ class Optimizer {
 			throw new Exception('OutputXmlKaputt');
 		}
 
-		file_put_contents($this->output_file, $content);
-		// TODO  and/or here?
+		if (!file_put_contents($this->output_file, $content)) {
+			throw new Exception('SaveFailed');
+		}
 	}
 
 
@@ -256,6 +284,9 @@ class Optimizer {
 		if (!is_dir($output)) {
 			throw new Exception('OutputDirNoDir');
 		}
+
+		// TODO  directory traversal?
+
 
 		// that method doesn't exist, I think.
 	//	if (!is_writable($output)) {
