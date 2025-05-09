@@ -23,8 +23,10 @@ TODO
 
 ## What it does
 
+Reduces filesize by removing unnecessary characters.
+
 * Remove elements that are hidden (`display:none`).
-* Remove whitespace between nodes (work in progress).
+* Remove whitespace between nodes.
 
 Example input:
 
@@ -47,21 +49,13 @@ Output:
 ```html
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" version="1.1" viewBox="0 0 52.917 52.917">
-
- <ellipse cx="31.75" cy="23.371" rx="21.167" ry="16.492" style="fill:#00f;stroke-width:0"/>
-
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" version="1.1" viewBox="0 0 52.917 52.917"><ellipse cx="31.75" cy="23.371" rx="21.167" ry="16.492" style="fill:#00f;stroke-width:0"/></svg>
 ```
-
-TODO  update?
 
 
 　​
 
 ## Usage
-
-
 
 ```php
 <?php
@@ -106,9 +100,20 @@ Optimizer::processDir('unoptimized-dir', 'output-dir');
 
 　​
 
+## Configuration
+
+`CONFIG_KEEP_HIDDEN_NODES`
+: Do not remove hidden nodes.
+
+`CONFIG_KEEP_WHITESPACE`
+: Do note remove whitespace between nodes.
+
+
+　​
+
 ## What it can't do
 
-* Detect if an element is hidden only via a computed property; for example:
+* Detect whether an element is hidden only via a computed property; for example:
 
 ```html
 <style>.hidden{display:none}</style>

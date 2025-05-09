@@ -36,8 +36,11 @@ $input_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'blue.sv
 $output_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
 // $output_file = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 
+$config = 0;
+$config = $config | Optimizer::CONFIG_KEEP_HIDDEN_NODES;
+$config = $config | Optimizer::CONFIG_KEEP_WHITESPACE;
 
-$optimizer = new Optimizer($input_file, $output_file);
+$optimizer = new Optimizer($input_file, $output_file, $config);
 $optimizer->optimize();
 ivd($optimizer->dump());
 $optimizer->save();

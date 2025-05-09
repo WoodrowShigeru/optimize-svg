@@ -20,8 +20,9 @@
  */
 class Optimizer {
 
-	// obsolete.
-	private $is_dev;
+	const CONFIG_KEEP_HIDDEN_NODES	= 0b001;
+	const CONFIG_KEEP_WHITESPACE	= 0b010;
+
 
 	/**
 	 * @var string $input_file
@@ -47,6 +48,12 @@ class Optimizer {
 	 */
 	private $root;
 
+	/**
+	 * @var int $options
+	 *   Store the passed options.
+	 */
+	private $options = 0;
+
 
 
 	// ---------------------- ALPHA + OMEGA ------------------------------------
@@ -56,7 +63,7 @@ class Optimizer {
 	 *
 	 * @param string $input
 	 * @param string $output
-	 * @param bool $is_dev
+	 * @param int $options
 	 *
 	 * @throws Exception
 	 *   InputFileNotFound
@@ -65,9 +72,7 @@ class Optimizer {
 	 *   InputFileNoSvg
 	 *   InputFileNoCleanSvg
 	 */
-	public function __construct( string $input, string $output, bool $is_dev = FALSE ) {
-
-		$this->is_dev = $is_dev;
+	public function __construct( string $input, string $output, int $options = 0 ) {
 
 		if (!file_exists($input)) {
 			throw new Exception('InputFileNotFound');
@@ -93,10 +98,16 @@ class Optimizer {
 
 		$this->input_file = $input;
 		$this->output_file = $output;
+		$this->options = $options;
 
+		$load_options = 0;
+
+		if (!($options & self::CONFIG_KEEP_WHITESPACE)) {
+			$load_options = $load_options | LIBXML_NOBLANKS;
+		}
 
 		$this->dom = new DOMDocument();
-		$this->dom->load($input);
+		$this->dom->load($input, $load_options);
 
 		$svg = $this->dom->getElementsByTagName('svg');
 
@@ -176,7 +187,9 @@ class Optimizer {
 			return;
 		}
 
-		$this->removeHiddenChildren($node);
+		if (!($this->options & self::CONFIG_KEEP_HIDDEN_NODES)) {
+			$this->removeHiddenChildren($node);
+		}
 
 		foreach ($node->childNodes as $child) {
 			$this->recurse($child);
@@ -239,8 +252,7 @@ class Optimizer {
 
 		$content = FALSE;
 		$options = 0;
-		// $options = LIBXML_NOBLANKS;  // TODO  do I have to do this on-load?
-		// TODO  testing: LIBXML_NOBLANKS, LIBXML_NSCLEAN.
+		// TODO  testing: LIBXML_NSCLEAN.
 
 		try {
 			$content = $this->dom->saveXML(NULL, $options);
@@ -327,6 +339,14 @@ class Optimizer {
 	 */
 	public function getOutputFile() {
 		return $this->output_file;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getOptions() {
+		return $this->options;
 	}
 }
 
