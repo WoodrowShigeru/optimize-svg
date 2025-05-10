@@ -253,7 +253,7 @@ class Optimizer {
 			file_exists($this->output_file)
 		&&	!is_writable($this->output_file)
 		) {
-			throw new Exception('OutputFileNotWritable');
+			throw new Exception('OutputFileNotWritable ~ ' .$this->output_file);
 		}
 
 
@@ -342,7 +342,7 @@ class Optimizer {
 		//	'plz_files_only' => TRUE,
 			'extensions'	=> ['svg'],
 		]);
-		ivd($list, 'scanned');
+	//	ivd($list, 'scanned');
 
 	//	throw new Exception('StopHere');
 
@@ -354,7 +354,7 @@ class Optimizer {
 
 			$optimizer = new Optimizer($input_file, $output_file, $options);
 			$optimizer->optimize();
-			ivd($optimizer->dump());
+		//	ivd($optimizer->dump());
 			$optimizer->save();
 		}
 	}

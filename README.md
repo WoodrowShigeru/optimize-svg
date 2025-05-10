@@ -84,6 +84,30 @@ echo $optimizer->dump();
 
 　​
 
+You can also do it from the shell – you just need to have PHP installed. If any, write the configuration in kebab-case as one comma-concatenated string (casing irrelevant). Multiple examples:
+
+```bash
+# base usage principle.
+$ php -f {path}/optimize-svg/cli.php ./unoptimized.svg ./clean.svg
+
+# possibly, file permission shenanigans.
+$ sudo -uwww-data php -f {path}/optimize-svg/cli.php  ./unoptimized.svg  ./clean.svg
+
+# directory.
+$ sudo -uwww-data php -f {path}/optimize-svg/cli.php  ./unoptimized-dir  ./output-dir
+
+# configurations.
+$ sudo -uwww-data php -f {path}/optimize-svg/cli.php  \
+ ./unoptimized.svg  ./clean.svg  keep-whitespace
+
+$ sudo -uwww-data php -f {path}/optimize-svg/cli.php  \
+ ./unoptimized.svg  ./clean.svg  keep-whitespace,KEEP-HIDDEN-NODES
+
+```
+
+
+　​
+
 ## Directories
 
 You can use a directory with many \*.SVG files as input (TODO  work in progress) – you just have to do it a certain way.
@@ -93,7 +117,7 @@ You can use a directory with many \*.SVG files as input (TODO  work in progress)
 // ✖ will throw an Exception.
 $optimizer = new Optimizer('./unoptimized-dir', './output-dir');
 
-// ✔ maybe like this?
+// ✔ please use it like this.
 Optimizer::processDir('./unoptimized-dir', './output-dir');
 ```
 
