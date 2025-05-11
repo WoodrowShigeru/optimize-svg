@@ -15,6 +15,7 @@ error_reporting(E_ALL);
 // optimizer.
 require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'classes', 'Optimizer.php']);
 
+
 list($script, $input, $output, $flags) = array_pad($argv, 4, NULL);
 
 

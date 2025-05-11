@@ -13,7 +13,7 @@
 // use Exception;
 
 
-require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'functions.inc.php';
+require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'..' .DIRECTORY_SEPARATOR .'functions.inc.php';
 
 
 /**
@@ -335,7 +335,7 @@ class Optimizer {
 		// TODO  directory traversal?
 
 
-		$output = provideTrailingSlash($output);
+		$output = provide_trailing_slash($output);
 
 
 		$list = listDir($input, [

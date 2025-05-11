@@ -7,6 +7,9 @@
  */
 
 
+define('FILE_SYSTEM_ALIASES', ['.', '..']);
+
+
 /**
  * Resolve any "dotdots" (or double periods) in a given path.
  *
@@ -72,7 +75,7 @@ function resolve_dotdots( string $path ) {
  * @return string
  *   Returns potentially altered directory.
  */
-function provideTrailingSlash( string $dir ) {
+function provide_trailing_slash( string $dir ) {
 
 	// Note: this method also works on multibyte strings despite the fact
 	//   that it uses non-multibyte string functions, because we are
@@ -108,16 +111,9 @@ function provideTrailingSlash( string $dir ) {
  *   `skip_by_extension` | string[] | List of extensions to skip, if any. Aka extensions blacklist.
  *   `extensions` | string[] | Extensions whitelist, if any.
  *
- * @throws DevelopmentException
- *   Bubbled up: preventing directory traversal.
- *
- * @throws NotFoundException
- *   Runtime error.
- *   If the directory does not exist (as a directory).
- *
  * @throws Exception
- *   Runtime error.
- *   If the directory could not be opened for reading.
+ *   DirNotFound
+ *   OpenDirFailed
  *
  * @return string[]
  *   Returns a list of server-context file locations in no particular
@@ -130,63 +126,65 @@ function listDir( string $dir, array $config = NULL ) {
 	$contents = [];
 
 //	self::preventDirectoryTraversal($dir, 'project_root');
+	//
+	// not relevant here. In fact, in the way.
 
-//	if (!file_exists($dir) || !is_dir($dir)) {
-//		throw new NotFoundException(_t(
-//			'global.Exceptions.Directory.NotFound',
-//			"Directory not found: {dir}",
-//			['dir' => $dir]
-//		));
-//	}
+	if (!file_exists($dir) || !is_dir($dir)) {
+		throw new Exception('DirNotFound—' .$dir);
+	}
+
 
 	// normalize parameters.
-	$dir = provideTrailingSlash($dir);
+	$dir = provide_trailing_slash($dir);
 
 	if (!isset($config)) {
 		$config = [];
 	}
+
 	if (!isset($config['plz_files_only'])) {
 		$config['plz_files_only'] = FALSE;
 	}
+
 	$has_whitelist = isset($config['extensions']);
 	$has_blacklist = isset($config['skip_by_extension']);
 	$has_ext_filter = $has_whitelist || $has_blacklist;
-//	if (!isset($config['skip_by_extension'])) {
-//		$config['skip_by_extension'] = [];
-//	}
+
+	if (!isset($config['skip_by_extension'])) {
+		$config['skip_by_extension'] = [];
+	}
+
 	if (!isset($config['extensions'])) {
 		$config['extensions'] = [];
 	}
 
-	// normalize extension list, if any.
-//	$count = count($config['skip_by_extension']);
-//	if ($count) {
-//		$encodings = array_fill(0, $count, 'UTF-8');
-//		$config['skip_by_extension'] =
-//			array_map('mb_strtolower', $config['skip_by_extension'], $encodings)
-//		;
-//	}
 
-	define('SKIPPABLES', ['.', '..']);
+	// normalize extension lists, if any.
+	if ($has_ext_filter) {
+		$filters = ['skip_by_extension', 'extensions'];
+
+		foreach ($filters as $name) {
+			$count = count($config[$name]);
+
+			if ($count) {
+				$encodings = array_fill(0, $count, 'UTF-8');
+				$config[$name] = array_map('mb_strtolower', $config[$name], $encodings);
+			}
+		}
+	}
 
 
 	// try to open.
 	$handle = opendir($dir);
 
 	if ($handle === FALSE) {
-		throw new Exception('OpenDirFailed');
-	//	throw new Exception(_t(
-	//		'global.Exceptions.Directory.Read\Failed',
-	//		"Could not read directory: {dir}",
-	//		['dir' => $dir]
-	//	));
+		throw new Exception('OpenDirFailed—' .$dir);
 	}
 
 
 	// iterate.
 	while ( ($entry = readdir($handle)) !== FALSE ) {
 		// TODO  clumsy.
-		if (!in_array($entry, SKIPPABLES, TRUE)) {
+		if (!in_array($entry, FILE_SYSTEM_ALIASES, TRUE)) {
 			$ext = mb_strtolower(pathinfo($entry, PATHINFO_EXTENSION), 'UTF-8');
 			$combo = $dir .$entry;
 
@@ -198,25 +196,25 @@ function listDir( string $dir, array $config = NULL ) {
 					if ($has_whitelist && in_array($ext, $config['extensions'], TRUE)) {
 						$contents[] = $combo;
 
-				//	} else if (
-				//		$has_blacklist && (
-				//			empty($ext)
-				//		||	!in_array($ext, $config['skip_by_extension'], TRUE)
-				//		)
-				//	) {
-				//		$contents[] = $combo;
+					} else if (
+						$has_blacklist && (
+							empty($ext)
+						||	!in_array($ext, $config['skip_by_extension'], TRUE)
+						)
+					) {
+						// TODO  untested else-if part. Not really needed in this project, anyway.
+						$contents[] = $combo;
 					}
 				}
 
 
 			} else if (is_dir($combo)) {
-			//	if (!$config['plz_files_only']) {
-			//		$contents[] = provideTrailingSlash($combo);
-			//	}
+				if (!$config['plz_files_only']) {
+					$contents[] = provide_trailing_slash($combo);
+				}
+
 				// recursion.
-				$contents = array_merge(
-					$contents, listDir($combo, $config)
-				);
+				$contents = array_merge($contents, listDir($combo, $config));
 			}
 
 			// decision: ignore symbolic links and such.
