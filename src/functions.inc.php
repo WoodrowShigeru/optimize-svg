@@ -119,7 +119,7 @@ function provide_trailing_slash( string $dir ) {
  *   Returns a list of server-context file locations in no particular
  *   order.
  */
-function listDir( string $dir, array $config = NULL ) {
+function list_dir( string $dir, array $config = NULL ) {
 
 	// TODO  move updated logic to, and use PhpWsh.
 
@@ -183,42 +183,44 @@ function listDir( string $dir, array $config = NULL ) {
 
 	// iterate.
 	while ( ($entry = readdir($handle)) !== FALSE ) {
-		// TODO  clumsy.
-		if (!in_array($entry, FILE_SYSTEM_ALIASES, TRUE)) {
-			$ext = mb_strtolower(pathinfo($entry, PATHINFO_EXTENSION), 'UTF-8');
-			$combo = $dir .$entry;
+		if (in_array($entry, FILE_SYSTEM_ALIASES, TRUE)) {
+			continue;
+		}
 
-			if (is_file($combo)) {
-				if (!$has_ext_filter) {
+
+		$ext = mb_strtolower(pathinfo($entry, PATHINFO_EXTENSION), 'UTF-8');
+		$combo = $dir .$entry;
+
+		if (is_file($combo)) {
+			if (!$has_ext_filter) {
+				$contents[] = $combo;
+
+			} else {
+				if ($has_whitelist && in_array($ext, $config['extensions'], TRUE)) {
 					$contents[] = $combo;
 
-				} else {
-					if ($has_whitelist && in_array($ext, $config['extensions'], TRUE)) {
-						$contents[] = $combo;
-
-					} else if (
-						$has_blacklist && (
-							empty($ext)
-						||	!in_array($ext, $config['skip_by_extension'], TRUE)
-						)
-					) {
-						// TODO  untested else-if part. Not really needed in this project, anyway.
-						$contents[] = $combo;
-					}
+				} else if (
+					$has_blacklist && (
+						empty($ext)
+					||	!in_array($ext, $config['skip_by_extension'], TRUE)
+					)
+				) {
+					// TODO  untested else-if part. Not really needed in this project, anyway.
+					$contents[] = $combo;
 				}
-
-
-			} else if (is_dir($combo)) {
-				if (!$config['plz_files_only']) {
-					$contents[] = provide_trailing_slash($combo);
-				}
-
-				// recursion.
-				$contents = array_merge($contents, listDir($combo, $config));
 			}
 
-			// decision: ignore symbolic links and such.
+
+		} else if (is_dir($combo)) {
+			if (!$config['plz_files_only']) {
+				$contents[] = provide_trailing_slash($combo);
+			}
+
+			// recursion.
+			$contents = array_merge($contents, list_dir($combo, $config));
 		}
+
+		// decision: ignore symbolic links and such.
 	}
 
 	// free memory.

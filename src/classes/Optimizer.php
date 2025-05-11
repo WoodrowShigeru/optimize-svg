@@ -293,12 +293,7 @@ class Optimizer {
 	 */
 	public static function processDir( string $input, string $output, int $options = 0 ) {
 
-		// TODO  clean up.
 		// TODO  testing, each exception. (and/or unittest)
-
-	//	return;
-		// PSEUDOCODE:
-
 
 		if (!file_exists($input)) {
 			throw new Exception('InputDirNotFound—' .$input);
@@ -313,7 +308,7 @@ class Optimizer {
 		}
 
 
-		// maybe mkdir.
+		// TODO  maybe mkdir.
 
 		if (file_exists($output)) {
 			if (!is_dir($output)) {
@@ -332,25 +327,20 @@ class Optimizer {
 	//	//	}
 
 		}
-		// TODO  directory traversal?
 
 
 		$output = provide_trailing_slash($output);
 
 
-		$list = listDir($input, [
-		//	'plz_files_only' => TRUE,
-			'extensions'	=> ['svg'],
+		$list = list_dir($input, [
+			'plz_files_only'	=> TRUE,
+			'extensions'		=> ['svg'],
 		]);
-	//	ivd($list, 'scanned');
-
-	//	throw new Exception('StopHere');
+		ivd($list, 'scanned');
+		throw new Exception('StopHere');
 
 		foreach ($list as $input_file) {
 			$output_file = $output .basename($input_file);
-		//	ivd($output);
-		//	ivd(basename($input_file));
-		//	$output_file = magic($input_file, $output);
 
 			$optimizer = new Optimizer($input_file, $output_file, $options);
 			$optimizer->optimize();
