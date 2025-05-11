@@ -262,7 +262,8 @@ class Optimizer {
 
 		$content = FALSE;
 		$options = 0;
-		// TODO  testing: LIBXML_NSCLEAN, LIBXML_NOEMPTYTAG	.
+
+		// decision: LIBXML_NOEMPTYTAG adds no benefit in this case.
 
 		try {
 			$content = $this->dom->saveXML(NULL, $options);

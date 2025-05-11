@@ -47,7 +47,7 @@ if ($devswitch_test_dirs = FALSE) {
 
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'tiles.svg']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'dice-6.svg']);
-	$input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'pink.svg']);
+	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'pink.svg']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'fileperm']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'excited-friend.✔']);
@@ -57,7 +57,7 @@ if ($devswitch_test_dirs = FALSE) {
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'double.svg']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'empty.svg']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
-	// $input  = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'blue.svg']);
+	$input  = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'blue.svg']);
 	$output = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
 	// $output = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 
