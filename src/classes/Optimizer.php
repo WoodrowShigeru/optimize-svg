@@ -13,7 +13,7 @@
 // use Exception;
 
 
-require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'banans.php';
+require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'functions.inc.php';
 
 
 /**
@@ -25,8 +25,6 @@ class Optimizer {
 
 	const CONFIG_KEEP_HIDDEN_NODES	= 0b001;
 	const CONFIG_KEEP_WHITESPACE	= 0b010;
-
-	const SKIPPABLES = ['.', '..'];
 
 
 	/**

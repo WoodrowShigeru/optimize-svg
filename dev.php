@@ -17,7 +17,7 @@ error_reporting(E_ALL);
 require_once implode(DIRECTORY_SEPARATOR, [$_SERVER['DOCUMENT_ROOT'], '..', 'ivd', 'autoload.php']);
 
 // optimizer.
-require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'Optimizer.php']);
+require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'classes', 'Optimizer.php']);
 
 
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'tiles.svg']);

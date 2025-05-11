@@ -11,7 +11,7 @@ TODO
 * Install LAMP or provide PHP in a way that works for you.
 * Need WoodrowShigeru/InteractiveVarDump (↯) (or keep-deactivate its usages).
 * `$ sudo ln -s /home/$USER/work/optimize-svg /var/www/lamp.local/public_html/optimize-svg`
-* → http://lamp.local/optimize-svg
+* → http://lamp.local/optimize-svg/src/dev.php
 
 
 　​
@@ -65,7 +65,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // necessary:
-require_once '{path/to/optimize-svg}/src/Optimizer.php';
+require_once '{path/to/this/repo}/src/classes/Optimizer.php';
 
 // make sure dir is readable/writable.
 $input_file = '{path}/unoptimized.svg';

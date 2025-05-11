@@ -1,9 +1,64 @@
 <?php
 /**
- * TODO
+ * Global declaration of global all-purpose functions.
+ *
  * @since 0.0.2
  * @author WoodrowShigeru <woodrow.shigeru@gmx.net>
  */
+
+
+/**
+ * Resolve any "dotdots" (or double periods) in a given path.
+ *
+ * (phpDocumentor can't handle them in the summary line) "Dotdots" refers to `..`.
+ *
+ * This is especially useful for avoiding the confusing behavior `file_exists()`
+ * shows with symbolic links.
+ *
+ * [HIGH_AVAILABILITY]
+ *
+ * @param string $path
+ *
+ * @return string
+ */
+function resolve_dotdots( string $path ) {
+
+	if (empty($path)) {
+		return $path;
+	}
+
+
+	$source = array_reverse(explode(DIRECTORY_SEPARATOR, $path));
+	$balance = 0;
+	$parts = array();
+
+	// going backwards through the path, keep track of the dotdots and "work
+	// them off" by skipping a part. Only take over the respective part if the
+	// balance is at zero.
+	foreach ($source as $part) {
+		if ($part === '..') {
+			$balance++;
+
+		} else if ($balance > 0) {
+			$balance--;
+
+		} else {
+			array_push($parts, $part);
+		}
+	}
+
+	// special case: path begins with too many dotdots, references "outside
+	// knowledge".
+	if ($balance > 0) {
+		for ($i = 0; $i < $balance; $i++) {
+			array_push($parts, '..');
+		}
+	}
+
+	$parts = array_reverse($parts);
+
+	return implode(DIRECTORY_SEPARATOR, $parts);
+}
 
 
 /**
@@ -69,6 +124,8 @@ function provideTrailingSlash( string $dir ) {
  *   order.
  */
 function listDir( string $dir, array $config = NULL ) {
+
+	// TODO  move updated logic to, and use PhpWsh.
 
 	$contents = [];
 
