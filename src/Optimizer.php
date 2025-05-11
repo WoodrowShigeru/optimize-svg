@@ -79,23 +79,25 @@ class Optimizer {
 	 */
 	public function __construct( string $input, string $output, int $options = 0 ) {
 
+		// TODO  resolve_dotdots. Also for processDir.
+
 		if (!file_exists($input)) {
-			throw new Exception('InputFileNotFound');
+			throw new Exception('InputFileNotFound—' .$input);
 		}
 
 		if (!is_readable($input)) {
-			throw new Exception('InputFileNotReadable');
+			throw new Exception('InputFileNotReadable—' .$input);
 		}
 
 		if (is_dir($input)) {
-			throw new Exception('InputFileNoFile');
+			throw new Exception('InputFileNoFile—' .$input);
 		}
 
 
 		$ext = strtoupper(pathinfo($input, PATHINFO_EXTENSION));
 
 		if ($ext !== 'SVG') {
-			throw new Exception('InputFileNoSvg');
+			throw new Exception('InputFileNoSvg—' .$input);
 		}
 
 		// decision: allow $output === $input.
@@ -117,7 +119,7 @@ class Optimizer {
 		$svg = $this->dom->getElementsByTagName('svg');
 
 		if ($svg->length !== 1) {
-			throw new Exception('InputFileNoCleanSvg');
+			throw new Exception('InputFileNoCleanSvg—' .$input);
 		}
 
 		$this->root = $svg[0];
@@ -230,7 +232,7 @@ class Optimizer {
 		$html = $this->dom->saveHTML();
 
 		if ($html === FALSE) {
-			throw new Exception('RenderFailed');
+			throw new Exception('RenderFailed—' .$this->input_file);
 		}
 
 		return $html;
@@ -253,7 +255,7 @@ class Optimizer {
 			file_exists($this->output_file)
 		&&	!is_writable($this->output_file)
 		) {
-			throw new Exception('OutputFileNotWritable ~ ' .$this->output_file);
+			throw new Exception('OutputFileNotWritable—' .$this->output_file);
 		}
 
 
@@ -269,11 +271,11 @@ class Optimizer {
 		}
 
 		if ($content === FALSE) {
-			throw new Exception('OutputXmlKaputt');
+			throw new Exception('OutputXmlKaputt—' .$this->output_file);
 		}
 
 		if (!file_put_contents($this->output_file, $content)) {
-			throw new Exception('SaveFailed');
+			throw new Exception('SaveFailed—' .$this->output_file);
 		}
 	}
 
@@ -301,15 +303,15 @@ class Optimizer {
 
 
 		if (!file_exists($input)) {
-			throw new Exception('InputDirNotFound');
+			throw new Exception('InputDirNotFound—' .$input);
 		}
 
 		if (!is_readable($input)) {
-			throw new Exception('InputDirNotReadable');
+			throw new Exception('InputDirNotReadable—' .$input);
 		}
 
 		if (!is_dir($input)) {
-			throw new Exception('InputDirNoDir');
+			throw new Exception('InputDirNoDir—' .$input);
 		}
 
 
@@ -317,13 +319,13 @@ class Optimizer {
 
 		if (file_exists($output)) {
 			if (!is_dir($output)) {
-				throw new Exception('OutputDirNoDir');
+				throw new Exception('OutputDirNoDir—' .$output);
 			}
 
 
 			// that method doesn't exist, I think.
 			if (!is_writable($output)) {
-				throw new Exception('OutputDirNotWritable');
+				throw new Exception('OutputDirNotWritable—' .$output);
 			}
 	//
 	//		// that's not how you check that.

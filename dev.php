@@ -24,7 +24,7 @@ require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'Optimizer.php']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'dice-6.svg']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'pink.svg']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'fileperm']);
-// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
+$input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'excited-friend.✔']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'nosvg.md']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'sneaky.svg']);
@@ -32,7 +32,7 @@ require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'Optimizer.php']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'double.svg']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'empty.svg']);
 // $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
-$input  = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'blue.svg']);
+// $input  = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'blue.svg']);
 $output = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'output.svg']);
 // $output = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 
@@ -41,12 +41,12 @@ $config = 0;
 // $config = $config | Optimizer::CONFIG_KEEP_WHITESPACE;
 
 // file testing.
-//	$optimizer = new Optimizer($input, $output, $config);
-//	$optimizer->optimize();
-//	ivd($optimizer->dump());
-//	$optimizer->save();
+	$optimizer = new Optimizer($input, $output, $config);
+	$optimizer->optimize();
+	ivd($optimizer->dump());
+	$optimizer->save();
 
-
+exit;
 
 
 
@@ -55,6 +55,6 @@ $config = 0;
 
 $input  = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles']);
 $output = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'outdir']);
-
+ivd($input);exit;
 Optimizer::processDir($input, $output, $config);
 
