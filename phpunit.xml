@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/|version|/phpunit.xsd"
+         bootstrap="autoload.php"
+         stopOnDefect="true">
+    <testsuites>
+        <testsuite name="optimize-svg">
+            <directory>tests/OptimizeSvg</directory>
+        </testsuite>
+
+        <testsuite name="functions">
+            <file>tests/FunctionsTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
