@@ -173,7 +173,7 @@ $optimizer = new Optimizer(
 
 ## Dependencies
 
-* PHP7 — Modules: dom, mbstring, xml.
+* PHP7 — Modules: dom, mbstring, pcre, xml.
 
 
 　​

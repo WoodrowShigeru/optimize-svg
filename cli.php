@@ -22,20 +22,17 @@ list($script, $input, $output, $flags) = array_pad($argv, 4, NULL);
 
 
 // config.
-$flags = explode(',', strtoupper($flags ?? ''));
+$flags = mb_strtoupper($flags, 'UTF-8');
+$flags = preg_filter('/-/', '_', $flags) ?? $flags;
+$flags = explode(',', $flags);
 
 $config = 0;
 
-if (in_array('KEEP-HIDDEN-NODES', $flags, TRUE)) {
-	$config = $config | Optimizer::CONFIG_KEEP_HIDDEN_NODES;
-}
-
-if (in_array('KEEP-WHITESPACE', $flags, TRUE)) {
-	$config = $config | Optimizer::CONFIG_KEEP_WHITESPACE;
-}
-
-if (in_array('KEEP-NAMESPACES', $flags, TRUE)) {
-	$config = $config | Optimizer::CONFIG_KEEP_NAMESPACES;
+foreach ($flags as $flag) {
+	$const = sprintf('%s::CONFIG_%s', Optimizer::class, $flag);
+	if (defined($const)) {
+		$config = $config | constant($const);
+	}
 }
 
 
