@@ -22,6 +22,7 @@ class Optimizer {
 
 	const CONFIG_KEEP_HIDDEN_NODES	= 0b001;
 	const CONFIG_KEEP_WHITESPACE	= 0b010;
+	const CONFIG_KEEP_NAMESPACES	= 0b100;
 
 
 	/**
@@ -107,6 +108,10 @@ class Optimizer {
 
 		if (!($options & self::CONFIG_KEEP_WHITESPACE)) {
 			$load_options = $load_options | LIBXML_NOBLANKS;
+		}
+
+		if (!($options & self::CONFIG_KEEP_NAMESPACES)) {
+			$load_options = $load_options | LIBXML_NSCLEAN;
 		}
 
 		$this->dom = new DOMDocument();
@@ -257,7 +262,7 @@ class Optimizer {
 
 		$content = FALSE;
 		$options = 0;
-		// TODO  testing: LIBXML_NSCLEAN.
+		// TODO  testing: LIBXML_NSCLEAN, LIBXML_NOEMPTYTAG	.
 
 		try {
 			$content = $this->dom->saveXML(NULL, $options);

@@ -7,7 +7,7 @@
 * Made Optimizer more PHP7 compatible. (TODO  testing)
 * Detect hidden state also in inline styles.
 * Added error handling: file permission shenanigans.
-* Added ability to configure, with `CONFIG_KEEP_HIDDEN_NODES` and `CONFIG_KEEP_WHITESPACE` directives.
+* Added ability to configure, with `CONFIG_KEEP_HIDDEN_NODES`, `CONFIG_KEEP_WHITESPACE`, `CONFIG_KEEP_NAMESPACES` directives.
 * Added global functions.
 * Added support for directories / multiple SVGs at once.
 * Added CLI.

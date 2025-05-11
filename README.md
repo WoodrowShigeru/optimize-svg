@@ -7,6 +7,7 @@ Reduces filesize by removing unnecessary characters.
 
 * Remove elements that are hidden (`display:none`).
 * Remove whitespace between nodes.
+* Remove redundant namespace declarations.
 
 Example input:
 
@@ -17,7 +18,7 @@ Example input:
  <g style="display:none">
   <circle cx="9.3003" cy="13.269" r="9.3003" style="fill:#ff4bf5;stroke-width:0"/>
  </g>
- <ellipse cx="31.75" cy="23.371" rx="21.167" ry="16.492" style="fill:#00f;stroke-width:0"/>
+ <ellipse xmlns="http://www.w3.org/2000/svg" cx="31.75" cy="23.371" rx="21.167" ry="16.492" style="fill:#00f;stroke-width:0"/>
  <g style="display:none">
   <circle cx="12.27" cy="40.845" r="6.4495" style="fill:#ff0;stroke-width:0"/>
  </g>
@@ -141,6 +142,9 @@ $ sudo -uwww-data php -f {path}/optimize-svg/cli.php  \
 
 `CONFIG_KEEP_WHITESPACE`
 : Do note remove whitespace between nodes.
+
+`CONFIG_KEEP_NAMESPACES`
+: Do note remove redundant namespaces (`xmlns` attributes with same value).
 
 ```php
 <?php

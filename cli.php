@@ -34,6 +34,10 @@ if (in_array('KEEP-WHITESPACE', $flags, TRUE)) {
 	$config = $config | Optimizer::CONFIG_KEEP_WHITESPACE;
 }
 
+if (in_array('KEEP-NAMESPACES', $flags, TRUE)) {
+	$config = $config | Optimizer::CONFIG_KEEP_NAMESPACES;
+}
+
 
 
 // dir branch.

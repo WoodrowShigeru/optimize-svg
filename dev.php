@@ -26,9 +26,10 @@ require_once implode(DIRECTORY_SEPARATOR, ['.', 'autoload.php']);
 $config = 0;
 // $config = $config | Optimizer::CONFIG_KEEP_HIDDEN_NODES;
 // $config = $config | Optimizer::CONFIG_KEEP_WHITESPACE;
+// $config = $config | Optimizer::CONFIG_KEEP_NAMESPACES;
 
 
-if ($devswitch_test_dirs = TRUE) {
+if ($devswitch_test_dirs = FALSE) {
 	// DIRECTORY.
 
 	$input  = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles']);
@@ -45,8 +46,8 @@ if ($devswitch_test_dirs = TRUE) {
 	// FILE.
 
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'tiles.svg']);
-	$input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'dice-6.svg']);
-	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'pink.svg']);
+	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'dice-6.svg']);
+	$input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'circles', 'pink.svg']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'fileperm']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'locked']);
 	// $input = implode(DIRECTORY_SEPARATOR, ['.', 'examples', 'excited-friend.✔']);
