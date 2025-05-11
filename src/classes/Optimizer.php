@@ -13,9 +13,6 @@ use DOMElement;
 use Exception;
 
 
-// require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'..' .DIRECTORY_SEPARATOR .'functions.inc.php';
-
-
 /**
  * Optimize a single SVG file.
  *
@@ -77,7 +74,8 @@ class Optimizer {
 	 */
 	public function __construct( string $input, string $output, int $options = 0 ) {
 
-		// TODO  resolve_dotdots. Also for processDir.
+		$input  = resolve_dotdots($input);
+		$output = resolve_dotdots($output);
 
 		if (!file_exists($input)) {
 			throw new Exception('InputFileNotFound—' .$input);
@@ -288,12 +286,23 @@ class Optimizer {
 	 *   One optionset to rule them all.
 	 *
 	 * @throws Exception
+	 *   InputDirNotFound
+	 *   InputDirNotReadable
+	 *   InputDirNoDir
+	 *   OutputDirNoDir
+	 *   OutputDirNotWritable
+	 *   Bubbled up: constructor
+	 *   Bubbled up: optimize()
+	 *   Bubbled up: save()
 	 *
 	 * @return void
 	 */
 	public static function processDir( string $input, string $output, int $options = 0 ) {
 
 		// TODO  testing, each exception. (and/or unittest)
+
+		$input  = resolve_dotdots($input);
+		$output = resolve_dotdots($output);
 
 		if (!file_exists($input)) {
 			throw new Exception('InputDirNotFound—' .$input);

@@ -1,26 +1,6 @@
 
 # ReadMe
 
-TODO
-
-
-　​
-
-## Dev
-
-* Install LAMP or provide PHP in a way that works for you.
-* Need WoodrowShigeru/InteractiveVarDump (↯) (or keep-deactivate its usages).
-* `$ sudo ln -s /home/$USER/work/optimize-svg /var/www/lamp.local/public_html/optimize-svg`
-* → http://lamp.local/optimize-svg/dev.php
-
-
-　​
-
-## Installation
-
-
-　​
-
 ## What it does
 
 Reduces filesize by removing unnecessary characters.
@@ -55,7 +35,9 @@ Output:
 
 　​
 
-## Usage
+## Installation
+
+Clone repository or download a release file.
 
 ```php
 <?php
@@ -66,11 +48,32 @@ error_reporting(E_ALL);
 
 // necessary:
 require_once '{path/to/this/repo}/src/classes/Optimizer.php';
-// or:
-use OptimizeSvg\Optimizer;
-require_once '{path/to/this/repo}/autoload.php';
+```
 
-// make sure dir is readable/writable.
+Or alternatively, use namespaces:
+
+```php
+<?php
+
+use OptimizeSvg\Optimizer;
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once '{path/to/this/repo}/autoload.php';
+```
+
+
+　​
+
+## Usage
+
+**Single file:** <br />
+
+```php
+<?php
+
 $input_file = '{path}/unoptimized.svg';
 $output_file = '{path}/optimized.svg';
 
@@ -80,14 +83,34 @@ $optimizer->optimize();
 // if you want to commit to writing the optimized file …
 $optimizer->save();
 
-// … else, if you just want to render it here.
+// … else if you just want to render it here.
 echo $optimizer->dump();
 ```
 
 
 　​
 
-You can also do it from the shell – you just need to have PHP installed. If any, write the configuration in kebab-case as one comma-concatenated string (casing irrelevant). Multiple examples:
+**Directories:** <br />
+You can use a directory with many \*.SVG files as input – you just have to do it a certain way.
+
+```php
+<?php
+// ✖ will throw an Exception.
+$optimizer = new Optimizer('./unoptimized-dir', './output-dir');
+
+// ✔ please use it like this.
+Optimizer::processDir('./unoptimized-dir', './output-dir');
+```
+
+
+　​
+
+**Terminal:** <br />
+You can also do it from the shell context with PHP installed.
+
+If any, write the configuration in kebab-case as one comma-concatenated string.
+
+Multiple examples:
 
 ```bash
 # base usage principle.
@@ -104,24 +127,8 @@ $ sudo -uwww-data php -f {path}/optimize-svg/cli.php  \
  ./unoptimized.svg  ./clean.svg  keep-whitespace
 
 $ sudo -uwww-data php -f {path}/optimize-svg/cli.php  \
- ./unoptimized.svg  ./clean.svg  keep-whitespace,KEEP-HIDDEN-NODES
+ ./unoptimized.svg  ./clean.svg  keep-whitespace,keep-hidden-nodes
 
-```
-
-
-　​
-
-## Directories
-
-You can use a directory with many \*.SVG files as input (TODO  work in progress) – you just have to do it a certain way.
-
-```php
-<?php
-// ✖ will throw an Exception.
-$optimizer = new Optimizer('./unoptimized-dir', './output-dir');
-
-// ✔ please use it like this.
-Optimizer::processDir('./unoptimized-dir', './output-dir');
 ```
 
 
@@ -137,7 +144,7 @@ Optimizer::processDir('./unoptimized-dir', './output-dir');
 
 ```php
 <?php
-// configure any way you like:
+
 $optimizer = new Optimizer(
 	$input_file,
 	$output_file,
@@ -162,11 +169,7 @@ $optimizer = new Optimizer(
 
 ## Dependencies
 
-* PHP7
-
-TODO  what modules?
-	* mb_* for mb_strtolower in listDir.
-	* libxml?
+* PHP7 — Modules: dom, mbstring, xml.
 
 
 　​
