@@ -6,14 +6,14 @@
  * @author WoodrowShigeru <woodrow.shigeru@gmx.net>
  */
 
-// namespace OptimizeSvg;
+namespace OptimizeSvg;
 
-// use DOMDocument;
-// use DOMElement;
-// use Exception;
+use DOMDocument;
+use DOMElement;
+use Exception;
 
 
-require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'..' .DIRECTORY_SEPARATOR .'functions.inc.php';
+// require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'..' .DIRECTORY_SEPARATOR .'functions.inc.php';
 
 
 /**
@@ -336,8 +336,8 @@ class Optimizer {
 			'plz_files_only'	=> TRUE,
 			'extensions'		=> ['svg'],
 		]);
-		ivd($list, 'scanned');
-		throw new Exception('StopHere');
+	//	ivd($list, 'scanned');
+	//	throw new Exception('StopHere');
 
 		foreach ($list as $input_file) {
 			$output_file = $output .basename($input_file);

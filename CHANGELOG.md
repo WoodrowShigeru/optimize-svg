@@ -8,8 +8,10 @@
 * Detect hidden state also in inline styles.
 * Added error handling: file permission shenanigans.
 * Added ability to configure, with `CONFIG_KEEP_HIDDEN_NODES` and `CONFIG_KEEP_WHITESPACE` directives.
+* Added global functions.
 * Added support for directories / multiple SVGs at once.
 * Added CLI.
+* Introduced namespaces.
 
 
 　​

@@ -7,13 +7,15 @@
  */
 
 
+use OptimizeSvg\Optimizer;
+
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-// optimizer.
-require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'classes', 'Optimizer.php']);
+require_once dirname(__FILE__) .DIRECTORY_SEPARATOR .'autoload.php';
 
 
 list($script, $input, $output, $flags) = array_pad($argv, 4, NULL);
@@ -38,8 +40,8 @@ if (in_array('KEEP-WHITESPACE', $flags, TRUE)) {
 if (is_dir($input)) {
 	Optimizer::processDir($input, $output, $config);
 
-	echo "Processed directory.\n";
-	exit;
+	// echo "Processed directory.\n";
+	exit(0);
 }
 
 
@@ -49,5 +51,6 @@ $optimizer = new Optimizer($input, $output, $config);
 $optimizer->optimize();
 $optimizer->save();
 
-echo "Processed file.\n";
+// echo "Processed file.\n";
+exit(0);
 

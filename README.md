@@ -66,6 +66,9 @@ error_reporting(E_ALL);
 
 // necessary:
 require_once '{path/to/this/repo}/src/classes/Optimizer.php';
+// or:
+use OptimizeSvg\Optimizer;
+require_once '{path/to/this/repo}/autoload.php';
 
 // make sure dir is readable/writable.
 $input_file = '{path}/unoptimized.svg';

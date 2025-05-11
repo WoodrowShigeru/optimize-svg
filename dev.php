@@ -2,11 +2,13 @@
 /**
  * Dev environment interface.
  *
+ * At this point, merely like the CLI, but with IVD support.
+ *
  * @since 0.0.1
  * @author WoodrowShigeru <woodrow.shigeru@gmx.net>
  */
 
-// use OptimizeSvg\Optimizer;
+use OptimizeSvg\Optimizer;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -17,7 +19,8 @@ error_reporting(E_ALL);
 require_once implode(DIRECTORY_SEPARATOR, [$_SERVER['DOCUMENT_ROOT'], '..', 'ivd', 'autoload.php']);
 
 // optimizer.
-require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'classes', 'Optimizer.php']);
+// require_once implode(DIRECTORY_SEPARATOR, ['.', 'src', 'classes', 'Optimizer.php']);
+require_once implode(DIRECTORY_SEPARATOR, ['.', 'autoload.php']);
 
 
 $config = 0;

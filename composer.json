@@ -14,7 +14,10 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"OptimizeSvg\\": "src/"
-		}
+			"OptimizeSvg\\": "src/classes/"
+		},
+		"files": [
+			"src/functions.inc.php"
+		]
 	}
 }
