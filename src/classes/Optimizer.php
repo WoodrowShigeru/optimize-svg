@@ -177,6 +177,36 @@ class Optimizer {
 		}
 	}
 
+	/**
+	 * TODO  -- Remove children from a given node if they are hidden.
+	 *
+	 * @param DOMElement|DOMText|DOMDocument $node
+	 *
+	 * @return void
+	 */
+	private function removeEmptyGroup( $node ) {
+
+		return;
+
+		if (!($node instanceof DOMElement)) {
+			return;
+		}
+
+
+		// PSEUDOCODE … that's basically it, but need to test.
+		if (
+			$node->tagName !== 'g'
+		||	!empty($node->childNodes)
+		) {
+			return true;
+		}
+
+		try {
+			$node->parentNode->removeChild($node);
+
+		} catch (Exception $ex) {}
+	}
+
 
 	/**
 	 * Recursively traverse and optimize a node and its children.
@@ -198,6 +228,8 @@ class Optimizer {
 		if (!($this->options & self::CONFIG_KEEP_HIDDEN_NODES)) {
 			$this->removeHiddenChildren($node);
 		}
+
+		// TODO  do it yourself: removeEmptyGroups. if `<g>` and no children.
 
 		foreach ($node->childNodes as $child) {
 			$this->recurse($child);

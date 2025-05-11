@@ -12,6 +12,7 @@
 * Added support for directories / multiple SVGs at once.
 * Added CLI.
 * Introduced namespaces.
+* Added unittests.
 
 
 　​

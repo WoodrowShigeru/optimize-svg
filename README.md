@@ -178,3 +178,12 @@ $optimizer = new Optimizer(
 
 　​
 
+**Dev dependencies:** <br />
+
+Name | Version | Purpose
+-----|---------|--------
+[sebastianbergmann/phpunit](https://github.com/sebastianbergmann/phpunit/) <br /> [PHAR repository](https://phar.phpunit.de/) | 9.6.15 | For unittests.
+
+
+　​
+

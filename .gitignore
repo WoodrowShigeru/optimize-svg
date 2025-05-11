@@ -9,9 +9,8 @@
 node_modules/
 vendor/
 www/libraries/
-v3-api/www/libraries/
-www/shared
 *.jar
+*.phar
 
 # compiled.
 *.class
